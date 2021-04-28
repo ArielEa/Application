@@ -30,8 +30,18 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.opsbears.webcomponents.application.webserver</groupId>
+            <artifactId>servicepool</artifactId>
+            <version>1.0.0-alpha14</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
