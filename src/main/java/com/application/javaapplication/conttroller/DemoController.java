@@ -21,6 +21,8 @@ public class DemoController
         String inputKey = request.getParameter("abd");
 
         return "Index Page : out put : " + inputKey;
+
+
     }
 
     @ResponseBody
