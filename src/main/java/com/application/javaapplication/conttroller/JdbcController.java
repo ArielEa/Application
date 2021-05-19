@@ -42,7 +42,7 @@ public class JdbcController
         });
         Map<String, List> mapList = new HashMap<String, List>() {
             {
-                put("admin_user", userList);
+                put("admin_user_info", userList);
             }
         };
         return mapList;
