@@ -1,95 +1,146 @@
 package com.application.javaapplication.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+@Data
+@TableName("admin_user")
 public class User
 {
+    @TableField(value = "id")
     private int id;
 
-    private String owner_code;
+    @TableField(value = "owner_code")
+    private String ownerCode;
 
-    private String admin_name;
+    @TableField(value = "adminName")
+    private String adminName;
 
-    private int user_identity;
+    @TableField(value = "password")
+    private String password;
 
-    private int user_status;
+    @TableField(value = "user_identity")
+    private int userIdentity;
 
-    private String register_time;
+    @TableField(value = "user_status")
+    private int userStatus;
 
-    private String update_time;
+    @TableField(fill = FieldFill.INSERT, value = "register_time")
+    private Timestamp registerTime;
 
-    private String login_time;
+    @TableField(fill = FieldFill.UPDATE, value = "update_time")
+    private Timestamp updateTime;
 
-    private String login_out;
+    @TableField(fill = FieldFill.UPDATE, value = "login_time")
+    private Timestamp loginTime;
 
+    @TableField(value = "login_out")
+    private Timestamp loginOut;
+
+    @TableField(value = "token")
+    private String token;
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public User setId(int id) {
         this.id = id;
+        return this;
     }
 
-    public String getOwner_code() {
-        return owner_code;
+    public String getOwnerCode() {
+        return ownerCode;
     }
 
-    public void setOwner_code(String owner_code) {
-        this.owner_code = owner_code;
+    public User setOwnerCode(String ownerCode) {
+        this.ownerCode = ownerCode;
+        return this;
     }
 
-    public String getAdmin_name() {
-        return admin_name;
+    public String getAdminName() {
+        return adminName;
     }
 
-    public void setAdmin_name(String admin_name) {
-        this.admin_name = admin_name;
+    public User setAdminName(String adminName) {
+        this.adminName = adminName;
+        return this;
     }
 
-    public int getUser_identity() {
-        return user_identity;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUser_identity(int user_identity) {
-        this.user_identity = user_identity;
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
-    public int getUser_status() {
-        return user_status;
+    public int getUserIdentity() {
+        return userIdentity;
     }
 
-    public void setUser_status(int user_status) {
-        this.user_status = user_status;
+    public User setUserIdentity(int userIdentity) {
+        this.userIdentity = userIdentity;
+        return this;
     }
 
-    public String getRegister_time() {
-        return register_time;
+    public int getUserStatus() {
+        return userStatus;
     }
 
-    public void setRegister_time(String register_time) {
-        this.register_time = register_time;
+    public User setUserStatus(int userStatus) {
+        this.userStatus = userStatus;
+        return this;
     }
 
-    public String getUpdate_time() {
-        return update_time;
+    public Timestamp getRegisterTime() {
+        return registerTime;
     }
 
-    public void setUpdate_time(String update_time) {
-        this.update_time = update_time;
+    public User setRegisterTime(Timestamp registerTime) {
+        this.registerTime = registerTime;
+        return this;
     }
 
-    public String getLogin_time() {
-        return login_time;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setLogin_time(String login_time) {
-        this.login_time = login_time;
+    public User setUpdateTime(Timestamp upTimestamp) {
+        this.updateTime = upTimestamp;
+        return this;
     }
 
-    public String getLogin_out() {
-        return login_out;
+    public Timestamp getLoginTime() {
+        return loginTime;
     }
 
-    public void setLogin_out(String login_out) {
-        this.login_out = login_out;
+    public User setLoginTime(Timestamp loginTime) {
+        this.loginTime = loginTime;
+        return this;
+    }
+
+    public Timestamp getLoginOut() {
+        return loginOut;
+    }
+
+    public User setLoginOut(Timestamp loginOut) {
+        this.loginOut = loginOut;
+        return this;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public User setToken(String token) {
+        this.token = token;
+        return this;
     }
 }

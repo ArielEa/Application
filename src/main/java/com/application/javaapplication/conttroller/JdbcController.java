@@ -35,8 +35,8 @@ public class JdbcController
             public User mapRow(ResultSet resultSet, int i) throws SQLException {
                 user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setAdmin_name(resultSet.getString("admin_name"));
-                user.setLogin_out(resultSet.getString("login_out"));
+                user.setAdminName(resultSet.getString("admin_name"));
+                user.setLoginOut(resultSet.getTimestamp("login_out"));
                 return user;
             }
         });
