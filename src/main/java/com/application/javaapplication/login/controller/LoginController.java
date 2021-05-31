@@ -6,6 +6,7 @@ import com.application.javaapplication.entity.enums.UserEnums;
 import com.application.javaapplication.login.utils.CommonUtils;
 import com.application.javaapplication.login.utils.LoginJdbcUtils;
 import com.application.javaapplication.login.utils.UpdateLoginInfoUtils;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -39,14 +40,12 @@ public class LoginController extends VerifyController
     @Autowired
     private ApplicationContext applicationContext;
 
-    @Autowired
-    private UtilsController utilsController;
-
     @GetMapping("/login_in")
     @ResponseBody
     @CrossOrigin
     @ExceptionHandler
-    public Map<String, User> loginIn(HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public Map<String, User> loginIn(HttpServletRequest request, UtilsController utils)
+            throws Exception
     {
         Map<String, User> list = new HashMap<String, User>();
 
@@ -54,10 +53,10 @@ public class LoginController extends VerifyController
         String password = request.getParameter("password");
 
         if (username == null || username.equals("") || StringUtils.isEmpty(username)) {
-            return utilsController.doErrorHandle( loginEnums.LOGIN_EMPTY_ERROR.getExplain(), loginEnums.LOGIN_EMPTY_ERROR.getCode() );
+            return utils.doErrorHandle( loginEnums.LOGIN_EMPTY_ERROR.getExplain(), loginEnums.LOGIN_EMPTY_ERROR.getCode() );
         }
         if (password == null || password.equals("") || StringUtils.isEmpty(password)) {
-            return utilsController.doErrorHandle( loginEnums.LOGIN_EMPTY_PASSWORD.getExplain(), loginEnums.LOGIN_EMPTY_ERROR.getCode() );
+            return utils.doErrorHandle( loginEnums.LOGIN_EMPTY_PASSWORD.getExplain(), loginEnums.LOGIN_EMPTY_ERROR.getCode() );
         }
         username = username.trim();
         password = password.trim();
@@ -65,7 +64,7 @@ public class LoginController extends VerifyController
         try {
             this.verifyUserSecret( username );
         } catch (Exception e) {
-            return utilsController.doErrorHandle(loginEnums.VERIFY_SECRET_INVALID.getExplain(), loginEnums.VERIFY_SECRET_INVALID.getCode());
+            return utils.doErrorHandle(loginEnums.VERIFY_SECRET_INVALID.getExplain(), loginEnums.VERIFY_SECRET_INVALID.getCode());
         }
 
         String passwordEncodeStr = commonUtils.Md5Sign(URLEncoder.encode(password, "UTF-8"));
@@ -73,21 +72,23 @@ public class LoginController extends VerifyController
         List<User> adminUserInfo = loginJdbcUtils.getLoginInfo(username);
 
         if (adminUserInfo.size() == 0) {
-            return utilsController.doErrorHandle( loginEnums.LOGIN_INVALID_ERROR.getExplain(), loginEnums.LOGIN_INVALID_ERROR.getCode());
+            return utils.doErrorHandle( loginEnums.LOGIN_INVALID_ERROR.getExplain(), loginEnums.LOGIN_INVALID_ERROR.getCode());
         }
         if (adminUserInfo.size() > 1) {
-            return utilsController.doErrorHandle( loginEnums.ADMIN_DATA_NUMS_ERROR.getExplain(), loginEnums.ADMIN_DATA_NUMS_ERROR.getCode() );
+            return utils.doErrorHandle( loginEnums.ADMIN_DATA_NUMS_ERROR.getExplain(), loginEnums.ADMIN_DATA_NUMS_ERROR.getCode() );
         }
         User adminSingleInfo = adminUserInfo.get(0);
 
         if (!passwordEncodeStr.equals(adminSingleInfo.getPassword())) {
-            return utilsController.doErrorHandle(loginEnums.LOGIN_ERROR_PASSWORD.getExplain(), loginEnums.LOGIN_ERROR_PASSWORD.getCode());
+            return utils.doErrorHandle(loginEnums.LOGIN_ERROR_PASSWORD.getExplain(), loginEnums.LOGIN_ERROR_PASSWORD.getCode());
         }
 
         String CurrentTime = commonUtils.getCurrentTime();
+
         Date actionTime = commonUtils.getDateTime(CurrentTime);
 
         String token = commonUtils.generateToken(adminSingleInfo.getAdminName(), adminSingleInfo.getOwnerCode(), CurrentTime);
+
         UpdateLoginInfoUtils updateLoginInfoUtils = (UpdateLoginInfoUtils) applicationContext.getBean("login.jdbc.action");
 
         Map<String, String> doUpdateList = new HashMap<String, String>(){

@@ -1,6 +1,8 @@
 package com.application.javaapplication.tools.dosql;
 
-import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.util.List;
 import java.util.Map;
 
 public interface SearchUtilInterface
@@ -8,7 +10,7 @@ public interface SearchUtilInterface
     <T> SearchUtilInterface getTableName(Class<T> element)
         throws Exception;
 
-     SearchUtilInterface createBuilder(String TableName)
+     SearchUtilInterface createQueryBuilder(String TableAliasName)
         throws Exception;
 
      SearchUtilInterface select(Map<Integer, String> Columns)
@@ -17,13 +19,13 @@ public interface SearchUtilInterface
      SearchUtilInterface where(String Columns, String handleType, String Alias)
          throws Exception;
 
-     SearchUtilInterface addWhere(String Columns, String handleType, String Alias)
+     SearchUtilInterface andWhere(String Columns, String handleType, String Alias)
          throws Exception;
 
      SearchUtilInterface setParameter(String Alias, String Value)
          throws Exception;
 
-     SearchUtilInterface setParameters(Map<String, String > condition)
+     <k, v> SearchUtilInterface setParameters(Map<k, v> condition)
          throws Exception;
 
      SearchUtilInterface leftJoin(String tableName, String joinAlias, String ConditionType, Map<String, String> ContactCondition)
@@ -47,15 +49,15 @@ public interface SearchUtilInterface
     SearchUtilInterface getQuery()
         throws Exception;
 
-    SearchUtilInterface getSQL()
+    String getSQL()
         throws Exception;
 
-    SearchUtilInterface getResult()
+    <T> List<T> getResult(RowMapper<T> rowMapper)
         throws Exception;
 
-    SearchUtilInterface getOneForMap()
+    <k, v> Map<k, v> getOneForMap()
         throws Exception;
 
-    SearchUtilInterface getOneForObject()
+    <T> T getOneForObject(RowMapper<T> rowMapper)
         throws Exception;
 }
