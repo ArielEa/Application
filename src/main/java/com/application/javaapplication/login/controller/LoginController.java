@@ -6,10 +6,11 @@ import com.application.javaapplication.entity.enums.UserEnums;
 import com.application.javaapplication.login.utils.CommonUtils;
 import com.application.javaapplication.login.utils.LoginJdbcUtils;
 import com.application.javaapplication.login.utils.UpdateLoginInfoUtils;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,13 +41,22 @@ public class LoginController extends VerifyController
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private Environment environment;
+
+    @Value("${spring.profiles.active}")
+    public String EnvironmentMode;
+
     @GetMapping("/login_in")
     @ResponseBody
     @CrossOrigin
     @ExceptionHandler
-    public Map<String, User> loginIn(HttpServletRequest request, UtilsController utils)
+    public <k, v> Map<k, v> loginIn(HttpServletRequest request, UtilsController utils)
             throws Exception
     {
+        System.out.println(environment.getProperty("spring.profiles.active"));
+
+
         Map<String, User> list = new HashMap<String, User>();
 
         String username = request.getParameter("username");
@@ -113,7 +123,11 @@ public class LoginController extends VerifyController
         adminSingleInfo.setLoginTime( actionTamp );
         adminSingleInfo.setLoginOut(new Timestamp( (new Date()).getTime() ));
 
-        return new HashMap<String, User>() {{
+        String loginToken = adminSingleInfo.getToken();
+
+        System.out.println(loginToken);
+
+        return new HashMap() {{
             put("userInfo", adminSingleInfo);
         }};
     }

@@ -1,14 +1,15 @@
 package com.application.javaapplication.conttroller;
 
 import com.application.javaapplication.entity.AccountSecret;
-import com.application.javaapplication.entity.User;
 import com.application.javaapplication.tools.Contains;
-import com.application.javaapplication.tools.dosql.SearchExtends;
+import com.application.javaapplication.tools.dosql.SqlDoctrineExtends;
+import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 
@@ -19,6 +20,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 public class VerifyController
@@ -30,7 +33,7 @@ public class VerifyController
     private verifyConfig verifyConfig;
 
     @Autowired
-    private SearchExtends EM;
+    private SqlDoctrineExtends EM;
 
     public void verifyUserSecret(String AccountCode) throws Exception
     {
@@ -40,25 +43,27 @@ public class VerifyController
             put(1, "A.account_secret");
             put(3, "A.daily_status");
         }};
+        showConfigBeans();
         try {
             List<AccountSecret> accountSecrets = null;
 
-            accountSecrets = EM.getTableName(AccountSecret.class).createQueryBuilder("A")
-                    .select(SelectColumn)
-                    .where("A.account_code", Contains.EM_EQ, "account_code")
-                    .andWhere("A.account_secret", Contains.EM_EQ, "account_secret")
-                    .setParameter("account_code", AccountCode)
-                    .setParameter("account_secret", "CERTEERQQQ312321311YY")
-                    .orderBy("A.id", "DESC")
+            String Alias = "A";
+
+            accountSecrets = EM.getTableName( AccountSecret.class )
+                    .createQueryBuilder( Alias )
+                    .select( SelectColumn )
+                    .where(Alias + ".account_code", Contains.EM_EQ, "iden")
+                    .setParameter("iden", AccountCode)
+//                    .andWhere(Alias + ".account_secret", Contains.EM_EQ, "secret")
+//                    .setParameter("secret", "testS")
+                    .orderBy(Alias + ".id", "DESC")
                     .getQuery().getResult(MyRowMapper());
 
+            System.out.println("查询结果:");
             System.out.println(accountSecrets);
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        System.out.println("end --------------- ");
-
 
         Map<String, String> secretMap = new HashMap<String, String>() {{
             put("account_code", AccountCode);
@@ -80,16 +85,52 @@ public class VerifyController
         return new RowMapper<AccountSecret>() {
             AccountSecret accountSecret = null;
             @Override
-            public AccountSecret mapRow(ResultSet resultSet, int i)
-                    throws SQLException
+            public AccountSecret mapRow(ResultSet resultSet, int i) throws SQLException
             {
-                accountSecret = new AccountSecret();
-                accountSecret.setAccountSecret( resultSet.getString("account_secret") );
-                accountSecret.setId( resultSet.getInt("id") );
-                accountSecret.setDailyStatus( resultSet.getInt("daily_status"));
-                accountSecret.setAccountCode( resultSet.getString("account_code") );
+                accountSecret = new AccountSecret()
+                        .setAccountSecret( resultSet.getString("account_secret") )
+                        .setId( resultSet.getInt("id") )
+                        .setDailyStatus( resultSet.getInt("daily_status"))
+                        .setAccountCode( resultSet.getString("account_code") );
+
                 return accountSecret;
+
             }
         };
+    }
+
+    public static void showConfigBeans() {
+        List<CloudColumnConfigBeans> maps = Lists.newArrayList(
+                new CloudColumnConfigBeans().setId("1").setShow("2"),
+                new CloudColumnConfigBeans().setId("11").setShow("22"),
+                new CloudColumnConfigBeans().setId("111").setShow("222")
+        );
+
+        Map<String, String> SingleLists = maps.stream().collect(
+                Collectors.toMap(CloudColumnConfigBeans::getId, CloudColumnConfigBeans::getShow, (key1, key2 ) ->
+                        {
+                            return key1;
+                        }
+                )
+        );
+
+        Map<String, CloudColumnConfigBeans> CloudColumnSet = maps.stream().collect(
+                Collectors.toMap(CloudColumnConfigBeans::getId, Function.identity())
+        );
+
+        System.out.println(JSONObject.toJSONString(SingleLists));
+        System.out.println(JSONObject.toJSONString(CloudColumnSet));
+    }
+
+
+    @Getter
+    @Setter
+    @Accessors(chain = true)
+    @lombok.Data
+    public static class CloudColumnConfigBeans {
+
+        public String id;
+
+        public String show;
     }
 }

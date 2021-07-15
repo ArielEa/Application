@@ -2,17 +2,19 @@ package com.application.javaapplication.tools.dosql;
 
 import com.application.javaapplication.tools.Contains;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.*;
 
 @Component
-public class SearchExtends extends dosqlUtils implements SearchUtilInterface
+public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInterface
 {
-    private SearchExtends QueryBuilder;
+    private SqlDoctrineExtends QueryBuilder;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -56,7 +58,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public <T> SearchUtilInterface getTableName(Class<T> element)
+    public <T> SqlDoctrineUtilInterface getTableName(Class<T> element)
             throws Exception
     {
         String tableName = element.getAnnotation(TableName.class).value();
@@ -69,7 +71,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface createQueryBuilder(String TableAliasName)
+    public SqlDoctrineUtilInterface createQueryBuilder(String TableAliasName)
             throws Exception
     {
         if(TableName == null || TableName.isEmpty()) {
@@ -81,7 +83,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface select(Map<Integer, String> Columns) throws Exception
+    public SqlDoctrineUtilInterface select(Map<Integer, String> Columns) throws Exception
     {
         StringBuilder columnStr = new StringBuilder();
 
@@ -103,7 +105,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface addSelect(Map<Integer, String> Columns) throws Exception
+    public SqlDoctrineUtilInterface addSelect(Map<Integer, String> Columns) throws Exception
     {
         StringBuilder addColumnStr = new StringBuilder();
 
@@ -122,7 +124,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface where(String Columns, String handleType, String Alias)
+    public SqlDoctrineUtilInterface where(String Columns, String handleType, String Alias)
             throws Exception
     {
         if (this.whereUsed == true) {
@@ -140,7 +142,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface andWhere(String Columns, String handleType, String Alias)
+    public SqlDoctrineUtilInterface andWhere(String Columns, String handleType, String Alias)
             throws Exception
     {
         if (Alias.isEmpty() || Columns.isEmpty() || handleType.isEmpty()) {
@@ -154,7 +156,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface setParameter(String Alias, String Value)
+    public SqlDoctrineUtilInterface setParameter(String Alias, String Value)
             throws Exception
     {
         Map<String, String> parameterValues = this.WhereCondition.get(Alias);
@@ -178,7 +180,7 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public <k, v> SearchUtilInterface setParameters(Map<k, v> condition) throws Exception
+    public <k, v> SqlDoctrineUtilInterface setParameters(Map<k, v> condition) throws Exception
     {
         if (!this.ParameterCondition.isEmpty()) {
             throw new Exception("Unable to operate;");
@@ -213,21 +215,21 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface leftJoin(String tableName, String joinAlias, String ConditionType, Map<String, String> ContactCondition)
+    public SqlDoctrineUtilInterface leftJoin(String tableName, String joinAlias, String ConditionType, Map<String, String> ContactCondition)
             throws Exception
     {
         return this;
     }
 
     @Override
-    public SearchUtilInterface addGroupBy(String Column)
+    public SqlDoctrineUtilInterface addGroupBy(String Column)
             throws Exception
     {
         return this;
     }
 
     @Override
-    public SearchUtilInterface orderBy(String Column, String SortType)
+    public SqlDoctrineUtilInterface orderBy(String Column, String SortType)
             throws Exception
     {
         if (Column.equals("") || SortType.equals("")) {
@@ -245,21 +247,21 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     }
 
     @Override
-    public SearchUtilInterface setFirstResult(Integer firstResult)
+    public SqlDoctrineUtilInterface setFirstResult(Integer firstResult)
             throws Exception
     {
         return this;
     }
 
     @Override
-    public SearchUtilInterface setMaxResult(Integer maxResult)
+    public SqlDoctrineUtilInterface setMaxResult(Integer maxResult)
             throws Exception
     {
         return this;
     }
 
     @Override
-    public SearchUtilInterface getQuery() throws Exception
+    public SqlDoctrineUtilInterface getQuery() throws Exception
     {
         Map<String, String> para = this.ParameterCondition;
         StringBuilder columnStr = new StringBuilder();
@@ -295,6 +297,19 @@ public class SearchExtends extends dosqlUtils implements SearchUtilInterface
     @Override
     public <T> List<T> getResult(RowMapper<T> rowMapper) throws Exception
     {
+//        try {
+//            jdbcTemplate.getDataSource().getConnection().setAutoCommit(false);
+//            jdbcTemplate.update("update oms set", new Object[]{"name", "lac"});
+//            jdbcTemplate.getDataSource().getConnection().commit();
+//        }catch (SQLException se) {
+//            jdbcTemplate.getDataSource().getConnection().rollback();
+//        } finally {
+//            try {
+//                jdbcTemplate.getDataSource().getConnection().setAutoCommit(true);
+//            }catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return jdbcTemplate.query(SqlQueryBuilder.toString(), rowMapper);
     }
 
