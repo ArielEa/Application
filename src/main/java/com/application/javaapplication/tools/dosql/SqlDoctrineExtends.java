@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -292,6 +293,33 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     public String getSQL() throws Exception
     {
         return SqlQueryBuilder.toString();
+    }
+
+    @Override
+    public SqlDoctrineUtilInterface beginTransaction() throws Exception
+    {
+        jdbcTemplate.getDataSource().getConnection().setAutoCommit(false);
+        return this;
+    }
+
+    @Override
+    public SqlDoctrineUtilInterface commit() throws Exception {
+        return null;
+    }
+
+    @Override
+    public SqlDoctrineUtilInterface rollback() throws Exception {
+        return null;
+    }
+
+    @Override
+    public SqlDoctrineUtilInterface clear() throws Exception {
+        return null;
+    }
+
+    @Override
+    public SqlDoctrineUtilInterface flush() throws Exception {
+        return null;
     }
 
     @Override

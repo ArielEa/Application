@@ -49,6 +49,21 @@ public interface SqlDoctrineUtilInterface
     SqlDoctrineUtilInterface getQuery()
         throws Exception;
 
+    SqlDoctrineUtilInterface beginTransaction()
+        throws Exception;
+
+    SqlDoctrineUtilInterface commit()
+        throws Exception;
+
+    SqlDoctrineUtilInterface rollback()
+        throws Exception;
+
+    SqlDoctrineUtilInterface clear()
+        throws Exception;
+
+    SqlDoctrineUtilInterface flush()
+        throws Exception;
+
     String getSQL()
         throws Exception;
 
