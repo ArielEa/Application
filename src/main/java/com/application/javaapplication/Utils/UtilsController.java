@@ -34,12 +34,12 @@ public class UtilsController
     {
         Map fatherList = new HashMap<>();
         Map childList = new HashMap<>();
-        childList.put("Sub-code", 1001);
-        childList.put("Sub-message", Message);
-        childList.put("Sub-path", "error utils");
+        childList.put("SubCode", 1001);
+        childList.put("SubMessage", Message);
+        childList.put("SubPath", "error utils");
         fatherList.put("flag", errorFlag);
         fatherList.put("code", Code);
-        fatherList.put("Sub-info", childList);
+        fatherList.put("SubInfo", childList);
         return fatherList;
     }
 
