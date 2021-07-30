@@ -10,16 +10,16 @@ import lombok.experimental.Accessors;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.core.type.AnnotationMetadata;
 
 import com.application.javaapplication.tools.verify.verifyConfig;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,6 +43,7 @@ public class VerifyController
             put(1, "A.account_secret");
             put(3, "A.daily_status");
         }};
+
         showConfigBeans();
         try {
             List<AccountSecret> accountSecrets = null;
@@ -123,8 +124,8 @@ public class VerifyController
     }
 
 
-    @Getter
     @Setter
+    @Getter
     @Accessors(chain = true)
     @lombok.Data
     public static class CloudColumnConfigBeans {

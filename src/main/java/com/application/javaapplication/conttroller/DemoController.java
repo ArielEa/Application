@@ -1,17 +1,15 @@
 package com.application.javaapplication.conttroller;
 
+import com.application.javaapplication.annotationCustomer.AnnotationUtil;
+import com.application.javaapplication.entity.Orders;
 import com.application.javaapplication.enums.*;
-import com.application.javaapplication.redis.RedisUtil;
-import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 @Controller
 //@RequestMapping("/api")
@@ -23,14 +21,18 @@ public class DemoController
     @Autowired
     private EnumsUtil enumsUtil;
 
+    @Autowired
+    private AnnotationUtil annotationUtil;
+
     @GetMapping("/")
     @ResponseBody
-    public String index(HttpServletRequest request)
-    {
+    public String index(HttpServletRequest request) throws ClassNotFoundException, NoSuchMethodException {
         String value = CallEnum.STRING_TEST_A.getDisplayName();
 //        String value = "";
 
         String inputKey = request.getParameter("abd");
+
+        annotationUtil.customTableFields(Orders.class);
 
         return "Index Page : out put : " + inputKey + "value = " + value;
     }

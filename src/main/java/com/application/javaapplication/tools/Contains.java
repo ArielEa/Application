@@ -21,6 +21,12 @@ public final class Contains
 
     public static final String EM_BETWEEN = "between";
 
+    public static final String EM_LIKE = "like";
+
+    public static final String EM_LEFT_LIKE = "lLike";
+
+    public static final String EM_RIGHT_LIKE = "rlike";
+
     public static final Map<String, String> ExplainParameters = new HashMap<String, String>() {{
         put(EM_EQ, "=");
         put(EM_GREATER_THAN, ">");
@@ -29,6 +35,9 @@ public final class Contains
         put(EM_LESS_THAN_CONTAIN, "<=");
         put(EM_CONTAIN, "in");
         put(EM_BETWEEN, "between");
+        put(EM_LIKE, "%~%");
+        put(EM_LEFT_LIKE, "%~");
+        put(EM_RIGHT_LIKE, "~%");
     }};
 
     public static String ExplainEnums(String key) throws Exception
