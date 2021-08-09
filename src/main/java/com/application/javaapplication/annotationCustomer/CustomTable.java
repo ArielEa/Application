@@ -10,5 +10,8 @@ public @interface CustomTable
 
     String name() default "";
 
+    // 默认是配置文件中的 doctrine.prefix.alias
+    String doctrinePrefixAlias() default "";
+
     CustomIndex[] indexes() default {};
 }

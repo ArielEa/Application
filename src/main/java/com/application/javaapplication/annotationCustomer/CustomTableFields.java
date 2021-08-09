@@ -16,7 +16,7 @@ public @interface CustomTableFields
 
     String name() default "";
 
-    String type() default "string";
+    String type(); // smallint/int/text/string/boolean/datetime
 
     int length() default 0;
 
@@ -26,5 +26,5 @@ public @interface CustomTableFields
 
     String comment() default "";
 
-    String defaultValues() default "";
+    boolean defaultValues() default false;
 }
