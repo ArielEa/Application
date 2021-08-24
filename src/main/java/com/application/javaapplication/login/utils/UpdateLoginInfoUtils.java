@@ -1,15 +1,13 @@
 package com.application.javaapplication.login.utils;
 
-import org.skife.jdbi.v2.TransactionStatus;
+import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.Map;
 import com.application.javaapplication.tools.dosql.dosqlUtils;
 
@@ -23,8 +21,10 @@ public class UpdateLoginInfoUtils
     @Autowired
     private ApplicationContext applicationContext;
 
+//    Propagation.NOT_SUPPORTED
+
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Boolean updateLogin( Map<String, String> list, Map<String, String> where) throws Exception
+    public void updateLogin(Map<String, String> list, Map<String, String> where) throws Exception
     {
         if (list.isEmpty()) {
             throw new Exception("ERROR");
@@ -33,6 +33,5 @@ public class UpdateLoginInfoUtils
 
         dosqlUtils.UpdateData("admin_user", list, where);
 
-        return true;
     }
 }

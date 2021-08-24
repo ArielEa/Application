@@ -14,11 +14,23 @@ import java.util.*;
 
 import com.application.javaapplication.tools.dosql.dosqlEnums;
 import com.application.javaapplication.tools.dosql.dosqlUtils;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Component
+@ResponseBody
 public class LoginJdbcUtils {
     @Autowired
     private ApplicationContext applicationContext;
+
+    @ResponseBody
+    public Map returnTest()
+    {
+        return new HashMap(){
+            {
+                put(1, "a");
+            }
+        };
+    }
 
     public List<User> getLoginInfo(String username) throws Exception
     {
