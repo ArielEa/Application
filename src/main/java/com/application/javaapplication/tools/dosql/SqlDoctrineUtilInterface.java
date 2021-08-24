@@ -75,4 +75,10 @@ public interface SqlDoctrineUtilInterface
 
     <T> T getOneForObject(RowMapper<T> rowMapper)
         throws Exception;
+
+    Integer find(Integer value)
+        throws Exception;
+
+    <k, v> Map<k, v> findOneBy(Map<k, v> condition)
+        throws Exception;
 }

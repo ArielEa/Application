@@ -356,4 +356,15 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     {
         return jdbcTemplate.queryForObject(SqlQueryBuilder.toString(), rowMapper);
     }
+
+    @Override
+    public Integer find(Integer value) throws Exception {
+        return null;
+    }
+
+
+    @Override
+    public <k, v> Map<k, v> findOneBy(Map<k, v> condition) throws Exception {
+        return null;
+    }
 }

@@ -8,22 +8,26 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minidev.json.JSONObject;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Controller;
-import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.stereotype.Component;
 
 import com.application.javaapplication.tools.verify.verifyConfig;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Controller
+@Component
+@ResponseBody
 public class VerifyController
 {
     @Value("${SYSTEM_SECRET}")
@@ -34,6 +38,27 @@ public class VerifyController
 
     @Autowired
     private SqlDoctrineExtends EM;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    public void init()
+    {
+        String token = request.getHeader("project_token");
+    }
+
+
+//    @PostConstruct
+    public <k, v> Map<k, v> checkAuth( HttpServletRequest request)
+    {
+        Map<Integer, String> returnList = new HashMap<>();
+
+        String token = request.getHeader("project_token");
+
+        returnList.put(1, token);
+
+        return (Map<k, v>) returnList;
+    }
 
     public void verifyUserSecret(String AccountCode) throws Exception
     {
