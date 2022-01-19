@@ -6,11 +6,9 @@ import com.application.javaapplication.entity.enums.UserEnums;
 import com.application.javaapplication.login.utils.CommonUtils;
 import com.application.javaapplication.login.utils.LoginJdbcUtils;
 import com.application.javaapplication.login.utils.UpdateLoginInfoUtils;
-import io.netty.handler.codec.http.cookie.Cookie;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -59,7 +57,7 @@ public class LoginController extends VerifyController
         System.out.println(environment.getProperty("spring.profiles.active"));
 
 
-        Map<String, User> list = new HashMap<String, User>();
+        Map<String, User> list = new HashMap<>();
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");

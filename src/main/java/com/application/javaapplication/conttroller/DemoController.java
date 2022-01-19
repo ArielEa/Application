@@ -1,9 +1,10 @@
 package com.application.javaapplication.conttroller;
 
 import com.application.javaapplication.annotationCustomer.AnnotationUtil;
-import com.application.javaapplication.entity.Orders;
 import com.application.javaapplication.enums.*;
+import org.apache.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,27 @@ public class DemoController
     @Autowired
     private AnnotationUtil annotationUtil;
 
+    @Value(value = "${spring.profiles.active}")
+    private String EnvironmentMode;
+
+    @Value("${doctrine.prefix.alias}")
+    private String EntityAlias;
+
+    @Value("${fsm.server}")
+    private String fsm;
+
+    private static org.apache.log4j.Logger logger = LogManager.getLogger(DemoController.class);
+
+    public void init()
+    {
+        String str = "This is a " + EnvironmentMode + " environment";
+
+        System.err.println( str );
+        System.err.println( fsm );
+
+        logger.info("print: _____" + str + "++++" + EntityAlias);
+    }
+
     @GetMapping("/")
     @ResponseBody
     public String index(HttpServletRequest request) throws ClassNotFoundException, NoSuchMethodException {
@@ -32,7 +54,7 @@ public class DemoController
 
         String inputKey = request.getParameter("abd");
 
-        annotationUtil.customTableFields(Orders.class);
+        this.test("a", "b","c");
 
         return "Index Page : out put : " + inputKey + "value = " + value;
     }
@@ -55,8 +77,16 @@ public class DemoController
 
         String message = "";
 
-//        message = redisUtil.get("bu");
-
         return "redis Message : " + message + "a" + a;
+    }
+
+    public void test ( String a, String ...b )
+    {
+
+        System.out.println(a);
+
+        for (int i = 0; i < 2; i++) {
+            System.out.println(b[i]);
+        }
     }
 }

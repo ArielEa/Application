@@ -1,12 +1,9 @@
 package com.application.javaapplication.genernal.controller;
 
 import com.application.javaapplication.conttroller.VerifyController;
-import com.application.javaapplication.login.utils.LoginJdbcUtils;
-import org.springframework.boot.context.properties.bind.BindResult;
-import org.springframework.stereotype.Component;
+import com.application.javaapplication.operation.Warehouse.WarehouseOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +18,9 @@ import java.util.Map;
 @RequestMapping("/warehouse")
 public class WarehouseController extends VerifyController
 {
+    @Autowired
+    private WarehouseOperation warehouseOperation;
+
     @GetMapping("/list")
     @ResponseBody
     @CrossOrigin
@@ -31,12 +31,13 @@ public class WarehouseController extends VerifyController
 
         String headerToken = request.getHeader("project_token");
 
-        warehouseList.put(1, "abc");
-
+        warehouseList.put(0, "abc");
         // todo:: 切片化注解
 //        this.init();
 
-        warehouseList.put(1, "headerToken");
+        warehouseList.put(1, headerToken);
+
+        warehouseOperation.list();
 
         return (Map<k, v>) warehouseList;
     }

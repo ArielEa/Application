@@ -8,9 +8,9 @@ public enum dosqlEnums
     SEARCH("SELECT ", " FROM "),
     EXTRA_WHERE(" where ", ";");
 
-    private String sqlMode;
+    private final String sqlMode;
 
-    private String splitStr;
+    private final String splitStr;
 
     dosqlEnums(String sqlMode, String splitStr)
     {

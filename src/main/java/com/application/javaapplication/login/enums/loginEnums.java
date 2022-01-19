@@ -9,9 +9,9 @@ public enum loginEnums {
     LOGIN_UPDATE_FAILURE(1006, "UPDATE LOGIN INFO FAILURE"),
     VERIFY_SECRET_INVALID(1007, "Invalid AccountCode SECRET");
 
-    private Integer Code;
+    private final Integer Code;
 
-    private String Explain;
+    private final String Explain;
 
     loginEnums(int Code, String Explain)
     {
@@ -27,5 +27,16 @@ public enum loginEnums {
     public String getExplain()
     {
         return this.Explain;
+    }
+
+    public static String findExplainByCode( int code ) throws Exception
+    {
+        for ( loginEnums loginEnums : loginEnums.values() )
+        {
+            if ( code == loginEnums.getCode() ) {
+                return loginEnums.getExplain();
+            }
+        }
+        throw new Exception( "error" );
     }
 }

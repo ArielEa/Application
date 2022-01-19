@@ -8,17 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.minidev.json.JSONObject;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.application.javaapplication.tools.verify.verifyConfig;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +39,7 @@ public class VerifyController
     @Autowired
     private HttpServletRequest request;
 
-    public void init()
+    public void init( HttpServletRequest request )
     {
         String token = request.getHeader("project_token");
     }
@@ -75,6 +72,7 @@ public class VerifyController
 
             String Alias = "A";
 
+            // entityManager  实体管理
             accountSecrets = EM.getTableName( AccountSecret.class )
                     .createQueryBuilder( Alias )
                     .select( SelectColumn )
@@ -143,6 +141,16 @@ public class VerifyController
         Map<String, CloudColumnConfigBeans> CloudColumnSet = maps.stream().collect(
                 Collectors.toMap(CloudColumnConfigBeans::getId, Function.identity())
         );
+
+        Map<String, String> newList = maps.stream().collect(
+                Collectors.toMap(CloudColumnConfigBeans::getId, (e) -> e.getShow(), (k, k1) ->{
+                    return k;
+                })
+        );
+
+        System.out.println("显示结果：");
+        System.out.println(JSONObject.toJSONString(newList));
+        System.out.println("显示结果结束：");
 
         System.out.println(JSONObject.toJSONString(SingleLists));
         System.out.println(JSONObject.toJSONString(CloudColumnSet));

@@ -10,6 +10,10 @@ import java.util.*;
 @RequestMapping("/api")
 public class ApiController
 {
+
+    // @RequestMapPing("/A/api/orders")
+    // AAApiController
+
     @GetMapping("/")
     @ResponseBody // 输入模版
     @CrossOrigin // 支持跨域

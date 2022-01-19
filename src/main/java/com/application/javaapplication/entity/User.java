@@ -8,7 +8,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@Data
+@lombok.Data
 @TableName("admin_user")
 public class User
 {

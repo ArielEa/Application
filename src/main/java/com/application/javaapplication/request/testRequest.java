@@ -26,9 +26,12 @@ public class testRequest
         String cookie = request.getHeader("Cookie");
         String token = request.getHeader("token");
         String headers = request.getHeader("headers");
+//        int page = Integer.valueOf( request.getParameter("pages") );
+//
+//        System.out.println(page);
 
         String environment = this.environment.getProperty("spring.profiles.active");
 
-        return "token 是 " + token + "\n cookie 是" + cookie + "\n" + headers+ "环境是 ：" + environment;
+        return "token 是 " + token + "\n cookie 是" + cookie + "\n" + headers+ "ces环境是 ：" + environment;
     }
 }

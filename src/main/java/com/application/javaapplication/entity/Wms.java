@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
 
 @Data
 @Accessors(chain = true)
-@TableName(value = "name")
+@TableName("wms")
 @CustomTable(name = "wms", indexes = {
         @CustomIndex(name = "wms_bn", columnList = "wms_bn", unique = true),
         @CustomIndex(name = "owner_code", columnList = "owner_code", unique = true)
@@ -32,7 +32,7 @@ public class Wms
     @CustomTableFields(name = "wms_type", type = "smallint", length = 2, comment = "仓储适配器 1 奇门WMS(默认), 2 自有WMS, 3 跨境WMS, 4 三方WMS")
     public Integer wmsType;
 
-    @CustomTableFields(name = "custom_id", type = "string", length = 100, comment = "customerId, 仓储联调编码")
+    @CustomTableFields(name = "customer_id", type = "string", length = 100, comment = "customerId, 仓储联调编码")
     public String customerId;
 
     @CustomTableFields(name = "support_batch", type = "smallint", length = 2, comment = "是否开启货主批次概念, 1 批次，0 不开启")

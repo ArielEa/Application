@@ -1,5 +1,6 @@
 package com.application.javaapplication.tools.dosql;
 
+import com.application.javaapplication.annotationCustomer.CustomTable;
 import com.application.javaapplication.tools.Contains;
 import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.ibatis.jdbc.SQL;
@@ -62,12 +63,14 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     public <T> SqlDoctrineUtilInterface getTableName(Class<T> element)
             throws Exception
     {
-        String tableName = element.getAnnotation(TableName.class).value();
+        String tableName = element.getAnnotation(CustomTable.class).name();
+
+        String prefix = element.getAnnotation(CustomTable.class).TablePrefix();
 
         if (tableName.equals("") ) {
             throw new Exception("Table Schema Error");
         }
-        this.TableName = tableName;
+        this.TableName = prefix + "_" + tableName;
         return this;
     }
 
@@ -266,8 +269,8 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     {
         Map<String, String> para = this.ParameterCondition;
         StringBuilder columnStr = new StringBuilder();
-        columnStr.append(" where ");
-        if (!this.ParameterCondition.isEmpty()) {
+        if (!para.isEmpty()) {
+            columnStr.append(" where ");
             List<String> keys = new ArrayList<String>(para.keySet());
             Collections.sort(keys);
             for (int i = 0; i < keys.size(); i++) {
@@ -358,13 +361,19 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     }
 
     @Override
-    public Integer find(Integer value) throws Exception {
+    public Integer find(Integer value)
+            throws Exception
+    {
+        // 通过id查找，返回对象
         return null;
     }
 
 
     @Override
-    public <k, v> Map<k, v> findOneBy(Map<k, v> condition) throws Exception {
+    public <k, v> Map<k, v> findOneBy(Map<k, v> condition)
+            throws Exception
+    {
+        // 返回对象
         return null;
     }
 }

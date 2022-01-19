@@ -32,19 +32,23 @@ public class UtilsController
     @ResponseBody
     public <k, v> Map<k ,v> doErrorHandle(String Message, int Code)
     {
-        Map fatherList = new HashMap<>();
-        Map childList = new HashMap<>();
+        Map<Object, Object> fatherList = new HashMap<>();
+
+        Map<Object, Object> childList = new HashMap<>();
+
         childList.put("SubCode", 1001);
         childList.put("SubMessage", Message);
         childList.put("SubPath", "error utils");
+
         fatherList.put("flag", errorFlag);
         fatherList.put("code", Code);
         fatherList.put("SubInfo", childList);
-        return fatherList;
+
+        return (Map<k, v>) fatherList;
     }
 
-    public Map doSuccessHandle(String Message, int Code)
+    public <k,v> Map<k, v> doSuccessHandle(String Message, int Code)
     {
-        return new HashMap();
+        return new HashMap<>();
     }
 }
