@@ -1,5 +1,6 @@
 package com.application.javaapplication.conttroller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import java.util.*;
 @RequestMapping("/api")
 public class ApiController
 {
-
     // @RequestMapPing("/A/api/orders")
     // AAApiController
 
@@ -19,6 +19,8 @@ public class ApiController
     @CrossOrigin // 支持跨域
     public String apiIndex()
     {
+
+
         String row = "api";
         return row;
     }

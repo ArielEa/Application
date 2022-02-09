@@ -3,6 +3,7 @@ package com.application.javaapplication.conttroller;
 import com.application.javaapplication.annotationCustomer.AnnotationUtil;
 import com.application.javaapplication.enums.*;
 import org.apache.log4j.LogManager;
+import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 //@RequestMapping("/api")
 public class DemoController
 {
+
+    public static String ABC;
+
+    @Value("${spring.profiles.active}")
+    public void TestA(String str) {
+        ABC = str;
+    }
+
     @Autowired
     private CommonEnum commonEnum;
 
@@ -49,6 +58,9 @@ public class DemoController
     @GetMapping("/")
     @ResponseBody
     public String index(HttpServletRequest request) throws ClassNotFoundException, NoSuchMethodException {
+
+        System.out.println();
+
         String value = CallEnum.STRING_TEST_A.getDisplayName();
 //        String value = "";
 
