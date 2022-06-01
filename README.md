@@ -10,5 +10,6 @@
 - Pick Up
 - Personal Center
 - Header Pic
+- te
 
 ### `The rest of the pending. It's currently under deployment.`
