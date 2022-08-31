@@ -2,9 +2,7 @@ package com.application.javaapplication.operation.Warehouse;
 
 import com.application.javaapplication.conttroller.DemoController;
 import com.application.javaapplication.entity.Warehouse;
-import com.application.javaapplication.entity.Wms;
 import com.application.javaapplication.entity.tools.Column;
-import com.application.javaapplication.tools.Contains;
 import com.application.javaapplication.tools.dosql.SqlDoctrineExtends;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -38,7 +36,7 @@ public class WarehouseOperation
 
         Column list  = (Column) applicationContext.getBean("custom_table_fields");
 
-        Map<Integer, String> SelectColumn = list.customTableFields( Warehouse.class, "warehouse" );
+        Map<Integer, String> SelectColumn = list.customTableFields( Warehouse.class, Alias );
 
         System.out.println( SelectColumn );
 

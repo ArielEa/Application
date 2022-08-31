@@ -94,9 +94,6 @@ public class DemoController
 
     public void test ( String a, String ...b )
     {
-
-        System.out.println(a);
-
         for (int i = 0; i < 2; i++) {
             System.out.println(b[i]);
         }
