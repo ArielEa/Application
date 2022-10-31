@@ -49,6 +49,9 @@ public interface SqlDoctrineUtilInterface
     SqlDoctrineUtilInterface getQuery()
         throws Exception;
 
+    SqlDoctrineUtilInterface persist(Object element)
+        throws Exception;
+
     SqlDoctrineUtilInterface beginTransaction()
         throws Exception;
 

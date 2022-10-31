@@ -30,8 +30,13 @@ public class testRequest
 //
 //        System.out.println(page);
 
+        String ip = request.getHeader("X-Forwarded-For");
+
+//        System.out.println(ip);
+
+
         String environment = this.environment.getProperty("spring.profiles.active");
 
-        return "token 是 " + token + "\n cookie 是" + cookie + "\n" + headers+ "ces环境是 ：" + environment;
+        return "token 是 " + token + "\n cookie 是" + cookie + "\n" + headers+ "\n ces环境是 ：" + environment;
     }
 }

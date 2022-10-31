@@ -1,16 +1,22 @@
 package com.application.javaapplication.tools.dosql;
 
 import com.application.javaapplication.annotationCustomer.CustomTable;
+import com.application.javaapplication.entity.ProjectList;
 import com.application.javaapplication.tools.Contains;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import javax.sql.rowset.spi.SyncResolver;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -53,11 +59,16 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
 
     public String LimitResult = "";
 
+    public String PersistSql = "";
+
     {
         SqlQueryBuilder = new StringBuilder();
 
         SqlQueryBuilder.append(dosqlEnums.SEARCH.getSqlMode());
     }
+
+    @Autowired
+    private ColumnListUtils columnListUtils;
 
     @Override
     public <T> SqlDoctrineUtilInterface getTableName(Class<T> element)
@@ -293,6 +304,54 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     }
 
     @Override
+    public SqlDoctrineUtilInterface persist(Object element) throws Exception
+    {
+        List<String> columns = columnListUtils.getChangeList(element);
+
+        StringBuilder columnsStr = new StringBuilder();
+        StringBuilder valueStr = new StringBuilder();
+        for (int i = 0; i< columns.size(); i++) {
+            String columnKey = columns.get(i);
+
+            if (columnKey == "id") {
+                continue;
+            }
+            String ObjectKey = "get" + StringUtils.capitalize(columnKey);
+
+            Method existMethod = element.getClass().getMethod(ObjectKey);
+
+            if (existMethod.invoke(element) instanceof DateTime) {
+                //转换成对应的时间格式
+                valueStr.append("\"" + ((DateTime) existMethod.invoke(element)).toString("YYYY-MM-dd HH:mm:ss") + "\", ");
+            } else {
+                valueStr.append("\"" + existMethod.invoke(element) + "\", ");
+            }
+            columnsStr.append(columnKey+", ");
+        }
+
+        String NewColumnsStr = "("+ columnsStr.substring(0, columnsStr.length() - 2) +")";
+        String NewValueStr = "("+valueStr.substring(0, valueStr.length() - 2)+")";
+
+        String tableName = element.getClass().getAnnotation(CustomTable.class).name();
+
+        StringBuilder InsertSqlQueryBuilder = new StringBuilder();
+
+        InsertSqlQueryBuilder.append(dosqlEnums.INSERT.getSqlMode())
+                .append(tableName)
+                .append(NewColumnsStr)
+                .append(AddColumnStr)
+                .append(dosqlEnums.INSERT.getSplitStr())
+                .append(FullTableName)
+                .append(SpaceSplit)
+                .append(NewValueStr)
+                .append(";");
+
+        PersistSql = InsertSqlQueryBuilder.toString();
+
+        return this;
+    }
+
+    @Override
     public String getSQL() throws Exception
     {
         return SqlQueryBuilder.toString();
@@ -322,6 +381,10 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
 
     @Override
     public SqlDoctrineUtilInterface flush() throws Exception {
+
+        if (!PersistSql.equals("")) {
+            this.jdbcTemplate.execute(PersistSql.toString());
+        }
         return null;
     }
 

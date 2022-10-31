@@ -3,7 +3,6 @@ package com.application.javaapplication.conttroller;
 import com.application.javaapplication.annotationCustomer.AnnotationUtil;
 import com.application.javaapplication.enums.*;
 import org.apache.log4j.LogManager;
-import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -95,7 +94,12 @@ public class DemoController
     public void test ( String a, String ...b )
     {
         for (int i = 0; i < 2; i++) {
-            System.out.println(b[i]);
+//            System.out.println(b[i]);
         }
+    }
+
+    public static String testDemo()
+    {
+        return "Hello";
     }
 }
