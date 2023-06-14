@@ -30,6 +30,18 @@ public class CatalogOperationsController extends BaseOperationController
     @Autowired
     private CatalogCreateExec catalogCreateExec;
 
+
+    @RequestMapping("/catalog/list")
+    @ResponseBody
+    public Map<String, String> CatalogList(HttpServletRequest request)
+    {
+        Map<String, String> parameters = requestParams.getRequestParams();
+
+        System.out.println(parameters);
+
+        return new HashMap<>();
+    }
+
     @PostMapping("/generate/catalog")
     @ResponseBody
     public Map<String, String> GenerateCatalogAction(HttpServletRequest request)
