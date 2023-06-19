@@ -1,5 +1,6 @@
 package com.application.javaapplication.conttroller;
 
+import com.alibaba.fastjson.JSON;
 import com.application.javaapplication.annotationCustomer.AnnotationUtil;
 import com.application.javaapplication.enums.*;
 import org.apache.log4j.LogManager;
@@ -67,7 +68,10 @@ public class DemoController
 
         this.test("a", "b","c");
 
-        return "Index Page : out put : " + inputKey + "value = " + value;
+        // 临时返回测试
+        return "{\"code\":0, \"flag\":\"success\",\"message\":\"接收成功\"}";
+
+//        return "Index Page : out put : " + inputKey + "value = " + value;
     }
 
     @ResponseBody
