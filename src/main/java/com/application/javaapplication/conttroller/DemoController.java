@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//@RequestMapping("/api")
 public class DemoController
 {
 
@@ -58,19 +57,16 @@ public class DemoController
     @GetMapping("/")
     @ResponseBody
     public String index(HttpServletRequest request) throws ClassNotFoundException, NoSuchMethodException {
-
         System.out.println();
 
         String value = CallEnum.STRING_TEST_A.getDisplayName();
-//        String value = "";
 
         String inputKey = request.getParameter("abd");
 
         this.test("a", "b","c");
 
-        // 临时返回测试
+        // 临时返回测试m
         return "{\"code\":0, \"flag\":\"success\",\"message\":\"接收成功\"}";
-
 //        return "Index Page : out put : " + inputKey + "value = " + value;
     }
 
