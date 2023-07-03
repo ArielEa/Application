@@ -47,14 +47,16 @@ public class WmsController extends BaseController
 
         String  message = "";
         int[] messageInfo;
-        try {
-            throw new Exception("Test Exception message");
-        } catch (Exception e) {
-            e.printStackTrace();
-            message = e.getMessage();
-            messageInfo = new int[]{1, 2, 3, 4}; // 往里面塞你要处理的错误数据， 然后
-        }
+//        try {
+//            throw new Exception("Test Exception message");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            message = e.getMessage();
+//            messageInfo = new int[]{1, 2, 3, 4}; // 往里面塞你要处理的错误数据， 然后
+//        }
 //        System.error.println( "获取secret : " + toolServiceModel.getSystemSecret() );
+
+        System.out.println(wms);
 
         return (List<T>) wms;
     }

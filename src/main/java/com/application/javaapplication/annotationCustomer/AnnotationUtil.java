@@ -1,5 +1,7 @@
 package com.application.javaapplication.annotationCustomer;
 
+import com.application.javaapplication.entity.Orders;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,27 +22,11 @@ public class AnnotationUtil
 {
     public <T> Map customTableFields(Class<T> element)
     {
-//        try {
-//            GroovyScriptEngine engine = new GroovyScriptEngine(
-//                    "src/main/java/com/application/javaapplication/Commands/hello.groovy"
-//            );
-//            Script script = engine.createScript("hello.groovy", new Binding());
-//
-//            String res = (String) script.invokeMethod("hello", 2);
-//
-//            System.out.println( res );
-//        }catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-        testMap();
-
         // 表名、索引、字段部分
         CustomTable customTable = element.getAnnotation(CustomTable.class);
 
         String CustomTableName = customTable.name();
         CustomIndex[] CustomIndexes = customTable.indexes();
-
-        System.out.println(CustomTableName);
 
         List<customIndex> columnIndexClass = Lists.newArrayList();
         for (CustomIndex customIndex: CustomIndexes) {
@@ -53,9 +39,6 @@ public class AnnotationUtil
         Map<String, customIndex> customIndexSet = columnIndexClass.stream().collect(
                 Collectors.toMap(customIndex::getName, Function.identity())
         );
-
-        System.out.println(customIndexSet);
-
         // 字段属性部分解释
         Field[] fields = element.getDeclaredFields();
 
@@ -80,19 +63,18 @@ public class AnnotationUtil
             );
         }
 
-        Map<String, customTableColumns> customColumnSet = singleFields.stream().collect(
-                Collectors.toMap(customTableColumns::getName, Function.identity())
-        );
-
-//        Map<String, String> customColumnSet = singleFields.stream().collect(
-//                Collectors.toMap(customTableColumns::getName, customTableColumns::getType, (key1, key2 ) ->
-//                        {
-//                            return key1;
-//                        }
-//                )
+//        Map<String, customTableColumns> customColumnSet = singleFields.stream().collect(
+//                Collectors.toMap(customTableColumns::getName, Function.identity())
 //        );
 
-//        System.out.println( customColumnSet );
+        Map<String, String> customColumnSet = singleFields.stream().collect(
+                Collectors.toMap(customTableColumns::getName, customTableColumns::getType, (key1, key2 ) ->
+                        {
+                            return key1;
+                        }
+                )
+        );
+        System.out.println( customColumnSet );
 
 //        TableName table = Orders.class.getAnnotation(TableName.class);
 //        String tableName = table.value();
@@ -142,18 +124,6 @@ public class AnnotationUtil
         private String columnList;
 
         private boolean unique;
-    }
-
-    public void testMap()
-    {
-        Map<Integer, String> mapTest = new HashMap<Integer, String>(){{
-                put(1, "value 1");
-                put(2, "value 2");
-                put(3, "value 3");
-            }};
-//        mapTest = unsetByValue(mapTest, "value 1");
-        unsetByKey(mapTest, 1);
-        System.out.println(mapTest);
     }
 
     public static Map<Integer, String> unsetByValue(Map<Integer, String> mapTest, String value)

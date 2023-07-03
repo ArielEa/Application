@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+//@RequestMapping("/api")
 public class DemoController
 {
-
     public static String ABC;
 
     @Value("${spring.profiles.active}")
@@ -42,14 +42,20 @@ public class DemoController
     @Value("${fsm.server}")
     private String fsm;
 
+    @Value("${product.api.alias}")
+    private String testValue;
+
     private static org.apache.log4j.Logger logger = LogManager.getLogger(DemoController.class);
 
     public void init()
     {
         String str = "This is a " + EnvironmentMode + " environment";
 
+        String testvalue = "Value is "+ testValue;
+
         System.err.println( str );
         System.err.println( fsm );
+        System.out.println( testvalue );
 
         logger.info("print: _____" + str + "++++" + EntityAlias);
     }
@@ -57,16 +63,21 @@ public class DemoController
     @GetMapping("/")
     @ResponseBody
     public String index(HttpServletRequest request) throws ClassNotFoundException, NoSuchMethodException {
+
         System.out.println();
 
         String value = CallEnum.STRING_TEST_A.getDisplayName();
+//        String value = "";
 
         String inputKey = request.getParameter("abd");
 
         this.test("a", "b","c");
 
-        // 临时返回测试m
+        this.init();
+
+        // 临时返回测试
         return "{\"code\":0, \"flag\":\"success\",\"message\":\"接收成功\"}";
+
 //        return "Index Page : out put : " + inputKey + "value = " + value;
     }
 

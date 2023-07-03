@@ -3,6 +3,7 @@ package com.application.javaapplication.operation.Wms;
 import com.application.javaapplication.entity.Wms;
 import com.application.javaapplication.entity.tools.Column;
 import com.application.javaapplication.tools.Contains;
+import com.application.javaapplication.tools.dosql.RowMapperUtils;
 import com.application.javaapplication.tools.dosql.SqlDoctrineExtends;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -26,6 +27,9 @@ public class WmsOperationObject
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private RowMapperUtils rowMapperUtils;
+
     private final Logger logger = LogManager.getLogger(WmsOperationObject.class);
 
     public <T> List<T> list ()
@@ -38,6 +42,8 @@ public class WmsOperationObject
         Column list  = (Column) applicationContext.getBean("custom_table_fields");
 
         Map<Integer, String> SelectColumn = list.customTableFields( Wms.class, "wms" );
+
+        rowMapperUtils.createCommonRowMapper(Wms.class);
 
         try {
             EM.getTableName( Wms.class )
@@ -53,7 +59,6 @@ public class WmsOperationObject
         }
         return (List<T>) wms;
     }
-
 
     public RowMapper<Wms> MyRowMapper()
     {
