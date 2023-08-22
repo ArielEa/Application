@@ -20,25 +20,24 @@ import java.util.stream.Collectors;
 @Component
 public class AnnotationUtil
 {
-    public <T> Map customTableFields(Class<T> element)
+    public <T> Map<String, String> customTableFields(Class<T> element)
     {
         // 表名、索引、字段部分
         CustomTable customTable = element.getAnnotation(CustomTable.class);
-
-        String CustomTableName = customTable.name();
-        CustomIndex[] CustomIndexes = customTable.indexes();
-
-        List<customIndex> columnIndexClass = Lists.newArrayList();
-        for (CustomIndex customIndex: CustomIndexes) {
-            columnIndexClass.add(
-                    new customIndex().setName(customIndex.name())
-                            .setUnique(customIndex.unique())
-                            .setColumnList(customIndex.columnList())
-            );
-        }
-        Map<String, customIndex> customIndexSet = columnIndexClass.stream().collect(
-                Collectors.toMap(customIndex::getName, Function.identity())
-        );
+//
+//        String CustomTableName = customTable.name();
+//        CustomIndex[] CustomIndexes = customTable.indexes();
+//        List<customIndex> columnIndexClass = Lists.newArrayList();
+//        for (CustomIndex customIndex: CustomIndexes) {
+//            columnIndexClass.add(
+//                    new customIndex().setName(customIndex.name())
+//                            .setUnique(customIndex.unique())
+//                            .setColumnList(customIndex.columnList())
+//            );
+//        }
+//        Map<String, customIndex> customIndexSet = columnIndexClass.stream().collect(
+//                Collectors.toMap(customIndex::getName, Function.identity())
+//        );
         // 字段属性部分解释
         Field[] fields = element.getDeclaredFields();
 
@@ -67,22 +66,20 @@ public class AnnotationUtil
 //                Collectors.toMap(customTableColumns::getName, Function.identity())
 //        );
 
-        Map<String, String> customColumnSet = singleFields.stream().collect(
+//        Map<String, String> customColumnSet = singleFields.stream().collect(
+//                Collectors.toMap(customTableColumns::getName, customTableColumns::getType, (key1, key2 ) ->
+//                        {
+//                            return key1;
+//                        }
+//                )
+//        );
+        return singleFields.stream().collect(
                 Collectors.toMap(customTableColumns::getName, customTableColumns::getType, (key1, key2 ) ->
                         {
                             return key1;
                         }
                 )
         );
-        System.out.println( customColumnSet );
-
-//        TableName table = Orders.class.getAnnotation(TableName.class);
-//        String tableName = table.value();
-//        System.out.println(tableName);
-//
-//        CustomTableFields field = Orders.class.getAnnotation(CustomTableFields.class);
-
-        return new HashMap();
     }
 
     @lombok.Data

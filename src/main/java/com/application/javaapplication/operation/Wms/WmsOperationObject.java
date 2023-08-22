@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,20 +42,26 @@ public class WmsOperationObject
 
         Map<Integer, String> SelectColumn = list.customTableFields( Wms.class, "wms" );
 
-        rowMapperUtils.createCommonRowMapper(Wms.class);
+        MyRowMapper();
 
         try {
-            EM.getTableName( Wms.class )
-                    .createQueryBuilder( Alias )
-                    .select( SelectColumn );
-//                    .where(Alias + ".wms_bn", Contains.EM_EQ, "wms_bn")
-//                    .setParameter("wms_bn", "self-wms")
-//                    .orderBy(Alias + ".id", "DESC")
-            wms =  EM.getQuery().getResult(MyRowMapper());
+            wms = EM.getTableName( Wms.class ).createQueryBuilder( Alias )
+//                    .select( SelectColumn )
+                    .where(Alias + ".wms_bn", Contains.EM_EQ, "wms_bn")
+                    .setParameter("wms_bn", "self-wms")
+                    .orderBy(Alias + ".id", "DESC")
+                    .getQuery().getResult();
+
+//            EM.getTableName( Wms.class ).createQueryBuilder( Alias ).select( SelectColumn );
+
+//            wms = EM.getTableName( Wms.class ).createQueryBuilder( Alias ).select( SelectColumn ).getQuery().getResult(MyRowMapper());
 
         } catch ( Exception sqlException ) {
             logger.info( sqlException.getMessage() );
         }
+
+        System.out.println(wms);
+
         return (List<T>) wms;
     }
 
@@ -74,6 +79,7 @@ public class WmsOperationObject
                         .setWmsAngle( resultSet.getInt("wms_angle"))
                         .setWmsAttr( resultSet.getInt( "wms_attr" ) )
                         .setWmsType( resultSet.getInt( "wms_type" ) )
+                        .setCreated( resultSet.getTimestamp("created") )
                         .setAccountCode( resultSet.getString("account_code") );
                 return wms;
             }

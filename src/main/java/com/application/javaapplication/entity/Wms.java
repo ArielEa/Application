@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 @Data
 @Accessors(chain = true)
 @TableName("wms")
@@ -81,9 +83,14 @@ public class Wms
     public String accountCode;
 
     @CustomTableFields(name = "created", type = "datetime", comment = "创建时间")
-    public DateTime created;
+    public Date created;
 
     @CustomTableFields(name = "modified", type = "datetime", comment = "更新时间")
-    public DateTime modified;
+    public Date modified;
 
+
+    private void idValue(int a)
+    {
+        System.out.println("test");
+    }
 }

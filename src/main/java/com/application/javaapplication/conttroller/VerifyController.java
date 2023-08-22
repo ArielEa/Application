@@ -81,7 +81,7 @@ public class VerifyController
 //                    .andWhere(Alias + ".account_secret", Contains.EM_EQ, "secret")
 //                    .setParameter("secret", "testS")
                     .orderBy(Alias + ".id", "DESC")
-                    .getQuery().getResult(MyRowMapper());
+                    .getQuery().getResult();
 
             System.out.println("查询结果:");
             System.out.println(accountSecrets);

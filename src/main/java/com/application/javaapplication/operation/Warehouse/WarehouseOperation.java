@@ -45,7 +45,7 @@ public class WarehouseOperation
                     .createQueryBuilder( Alias )
                     .select( SelectColumn );
 
-            warehouse = EM.getQuery().getResult(MyRowMapper());
+            warehouse = EM.getQuery().getResult();
 
 
         }catch ( SQLException sqlException ) {

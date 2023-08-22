@@ -1,22 +1,16 @@
 package com.application.javaapplication.tools.dosql;
 
 import com.application.javaapplication.annotationCustomer.CustomTable;
-import com.application.javaapplication.entity.ProjectList;
+import com.application.javaapplication.entity.Wms;
 import com.application.javaapplication.tools.Contains;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.jdbc.SQL;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.sql.rowset.spi.SyncResolver;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -70,11 +64,18 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     @Autowired
     private ColumnListUtils columnListUtils;
 
+    @Autowired
+    private RowMapperUtils rowMapperUtils;
+
+    private Class<?> element;
+
     @Override
     public <T> SqlDoctrineUtilInterface getTableName(Class<T> element)
             throws Exception
     {
         String tableName = element.getAnnotation(CustomTable.class).name();
+
+        this.element = element;
 
         String prefix = element.getAnnotation(CustomTable.class).TablePrefix();
 
@@ -142,7 +143,7 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     public SqlDoctrineUtilInterface where(String Columns, String handleType, String Alias)
             throws Exception
     {
-        if (this.whereUsed == true) {
+        if (this.whereUsed) {
             throw new Exception("Repeat action");
         }
         this.whereUsed = true;
@@ -389,8 +390,10 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
     }
 
     @Override
-    public <T> List<T> getResult(RowMapper<T> rowMapper) throws Exception
+    public <T> List<T> getResult() throws Exception
     {
+        RowMapper<Object> newRowMapper = rowMapperUtils.getRowMapper(element);
+
 //        try {
 //            jdbcTemplate.getDataSource().getConnection().setAutoCommit(false);
 //            jdbcTemplate.update("update oms set", new Object[]{"name", "lac"});
@@ -404,13 +407,13 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
 //                e.printStackTrace();
 //            }
 //        }
-        return jdbcTemplate.query(SqlQueryBuilder.toString(), rowMapper);
+        return (List<T>) jdbcTemplate.query(SqlQueryBuilder.toString(), newRowMapper);
     }
 
     @Override
     public <k, v> Map<k, v> getOneForMap() throws Exception
     {
-        Map ResultMap = new HashMap();
+        Map ResultMap;
 
         ResultMap = jdbcTemplate.queryForMap(SqlQueryBuilder.toString());
 
@@ -437,6 +440,11 @@ public class SqlDoctrineExtends extends dosqlUtils implements SqlDoctrineUtilInt
             throws Exception
     {
         // 返回对象
+        return null;
+    }
+
+    @Override
+    public <T> List<T> getOneForObject() {
         return null;
     }
 }

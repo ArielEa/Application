@@ -1,7 +1,9 @@
 package com.application.javaapplication.tools.dosql;
 
+import com.application.javaapplication.entity.Wms;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +72,7 @@ public interface SqlDoctrineUtilInterface
     String getSQL()
         throws Exception;
 
-    <T> List<T> getResult(RowMapper<T> rowMapper)
+    <T> List<T> getResult()
         throws Exception;
 
     <k, v> Map<k, v> getOneForMap()
@@ -83,5 +85,8 @@ public interface SqlDoctrineUtilInterface
         throws Exception;
 
     <k, v> Map<k, v> findOneBy(Map<k, v> condition)
+        throws Exception;
+
+    <T> List<T> getOneForObject()
         throws Exception;
 }

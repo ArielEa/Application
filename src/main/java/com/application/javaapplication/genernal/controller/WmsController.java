@@ -1,6 +1,7 @@
 package com.application.javaapplication.genernal.controller;
 
 import com.application.javaapplication.conttroller.BaseController;
+import com.application.javaapplication.entity.AccountSecret;
 import com.application.javaapplication.entity.Wms;
 import com.application.javaapplication.operation.Wms.WmsOperationObject;
 import com.application.javaapplication.tools.result.Result;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ import com.application.javaapplication.login.enums.loginEnums;
 @ResponseBody
 public class WmsController extends BaseController
 {
+    public List<AccountSecret> queryAccount;
+
     @Autowired
     private toolServiceModel toolServiceModel;
 
@@ -56,7 +60,8 @@ public class WmsController extends BaseController
 //        }
 //        System.error.println( "获取secret : " + toolServiceModel.getSystemSecret() );
 
-        System.out.println(wms);
+//        System.out.println(wms);
+
 
         return (List<T>) wms;
     }
