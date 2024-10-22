@@ -72,7 +72,7 @@ public class VerifyController
 
             String Alias = "A";
 
-            // entityManager  实体管理
+            // entityManager  実体管理
             accountSecrets = EM.getTableName( AccountSecret.class )
                     .createQueryBuilder( Alias )
                     .select( SelectColumn )
@@ -83,7 +83,7 @@ public class VerifyController
                     .orderBy(Alias + ".id", "DESC")
                     .getQuery().getResult();
 
-            System.out.println("查询结果:");
+            System.out.println("結果は:");
             System.out.println(accountSecrets);
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -143,14 +143,14 @@ public class VerifyController
         );
 
         Map<String, String> newList = maps.stream().collect(
-                Collectors.toMap(CloudColumnConfigBeans::getId, (e) -> e.getShow(), (k, k1) ->{
+                Collectors.toMap(CloudColumnConfigBeans::getId, CloudColumnConfigBeans::getShow, (k, k1) ->{
                     return k;
                 })
         );
 
-        System.out.println("显示结果：");
+        System.out.println("SHOW MESSAGE：");
         System.out.println(JSONObject.toJSONString(newList));
-        System.out.println("显示结果结束：");
+        System.out.println("Show message success!!!：");
 
         System.out.println(JSONObject.toJSONString(SingleLists));
         System.out.println(JSONObject.toJSONString(CloudColumnSet));
